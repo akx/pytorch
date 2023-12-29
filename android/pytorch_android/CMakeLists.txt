@@ -70,7 +70,11 @@ else()
     ${pytorch_android_DIR}/pytorch_jni_common.h
   )
 endif()
-add_library(${PYTORCH_JNI_TARGET} SHARED ${pytorch_android_SOURCES})
+if(MSVC AND NOT BUILD_SHARED_LIBS)
+  add_library(${PYTORCH_JNI_TARGET} STATIC ${pytorch_android_SOURCES})
+else()
+  add_library(${PYTORCH_JNI_TARGET} SHARED ${pytorch_android_SOURCES})
+endif()
 
 if(APPLE)
   # Need to add rpath so dlopen can find dependencies.
